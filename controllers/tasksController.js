@@ -1,3 +1,4 @@
+"use strict";
 
 var TaskExports = require('../data/tasks');
 var Project = TaskExports.Project;

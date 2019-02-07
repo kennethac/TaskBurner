@@ -1,3 +1,5 @@
+"use strict";
+
 class Task {
     constructor(name, dueDate, scheduledDate, complete) {
         this.name = name;
