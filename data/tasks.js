@@ -20,6 +20,10 @@ Date.prototype.addDays = function (days) {
     return new Date(this.valueOf() + days * 864e5);
 }
 
+Date.prototype.isThisWeek = function() {
+    return this < new Date().setHours(0).addDays(7);
+}
+
 function newDummyProject(name, numTasks) {
     let newTasks = [];
     for (var i = 0; i < numTasks; ++i) {
