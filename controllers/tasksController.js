@@ -31,7 +31,6 @@ class TasksController {
     }
 
     project(req, res) {
-        console.log("Hello?");
         res.send(this._getProject(req.params["project"]));
     }
 }
