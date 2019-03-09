@@ -10,9 +10,10 @@ class Task {
 }
 
 class Project {
-    constructor(name, tasks) {
+    constructor(name, tasks, lastUpdated) {
         this.name = name;
         this.tasks = tasks;
+        this.lastUpdated = lastUpdated;
     }
 }
 
@@ -25,6 +26,7 @@ Date.prototype.isThisWeek = function() {
 }
 
 function newDummyProject(name, numTasks) {
+
     let newTasks = [];
     for (var i = 0; i < numTasks; ++i) {
         let taskName = ` ${name.split(' ')[0]} ${i}`;
@@ -33,8 +35,8 @@ function newDummyProject(name, numTasks) {
         let complete = Math.random() > 0.5;
         newTasks.push(new Task(taskName, dueDate, scheduledDate, complete));
     }
-
-    return new Project(name, newTasks);
+    let lastUpdate = new Date(2019, 2, 1);
+    return new Project(name, newTasks, lastUpdate);
 }
 
 let allProjects = {
