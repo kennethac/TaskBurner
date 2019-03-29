@@ -53,12 +53,6 @@ class UsersController {
             await user.save();
             this.logonUser(user, res);
         } catch (error) {
-            // tslint:disable-next-line: no-console
-            console.log("this is: ");
-            // tslint:disable-next-line: no-console
-            console.log(this);
-            // tslint:disable-next-line: no-console
-            console.error(error);
             return res.sendStatus(500);
         }
     }
