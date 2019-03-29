@@ -5,22 +5,6 @@ import auth from "../auth/auth";
 import { User, UserTable } from "../models/User";
 
 class UsersController {
-
-    public static async logonUser(user: InstanceType<User>, res: Response) {
-        const token = auth.generateToken({
-            id: user._id
-        }, "24h");
-
-        user.removeOldTokens();
-        user.addToken(token);
-        await user.save();
-
-        return res
-            .cookie("token", token, {
-                expires: new Date(Date.now() + 86400 * 1000)
-            })
-            .status(200).send({ user, token });
-    }
     public router = express.Router();
 
     constructor() {
@@ -67,7 +51,7 @@ class UsersController {
             });
 
             await user.save();
-            UsersController.logonUser(user, res);
+            this.logonUser(user, res);
         } catch (error) {
             // tslint:disable-next-line: no-console
             console.log("this is: ");
@@ -103,16 +87,32 @@ class UsersController {
                     error: "username or password is wrong"
                 });
             }
-            UsersController.logonUser(existingUser, res);
+            this.logonUser(existingUser, res);
         } catch (error) {
             return res.sendStatus(500);
         }
     }
 
+    public async logonUser(user: InstanceType<User>, res: Response) {
+        const token = auth.generateToken({
+            id: user._id
+        }, "24h");
+
+        user.removeOldTokens();
+        user.addToken(token);
+        await user.save();
+
+        return res
+            .cookie("token", token, {
+                expires: new Date(Date.now() + 86400 * 1000)
+            })
+            .status(200).send({ user, token });
+    }
+
     private initializeRoutes() {
-        this.router.get("/", auth.verifyToken, this.getCurrentUser);
-        this.router.post("/register", this.register);
-        this.router.post("/login", this.logon);
+        this.router.get("/", auth.verifyToken, this.getCurrentUser.bind(this));
+        this.router.post("/register", this.register.bind(this));
+        this.router.post("/login", this.logon.bind(this));
     }
 }
 
