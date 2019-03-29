@@ -13,14 +13,14 @@
                 "node_modules/*"
             ]
         },
-        "references": [
-            {
-                "path": "../shared"
-            }
-        ],
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true
     },
+    "references": [
+        {
+            "path": "../shared"
+        }
+    ],
     "include": [
         "src/**/*"
     ]

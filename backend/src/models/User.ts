@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
 import { HookNextFunction, MongooseDocument } from "mongoose";
-import { instanceMethod, pre, prop, Typegoose } from "typegoose";
+import { arrayProp, instanceMethod, pre, prop, Typegoose } from "typegoose";
 import IUser from "../../../shared/models/IUser";
 import auth from "../auth/auth";
 
@@ -22,7 +22,7 @@ class User extends Typegoose implements IUser {
     @prop()
     public password?: string;
 
-    @prop()
+    @arrayProp({items: String})
     public tokens: string[] = [];
 
     // Instance Methods
@@ -55,7 +55,7 @@ class User extends Typegoose implements IUser {
 
     @instanceMethod
     public removeToken(token: string) {
-        this.tokens = this.tokens.filter((t) => t != token);
+        this.tokens = this.tokens.filter((t) => t !== token);
     }
 
     @instanceMethod
@@ -79,10 +79,9 @@ async function presave(this: User & MongooseDocument, next: HookNextFunction) {
         this.password = hash;
         next();
     } catch (error) {
-        console.log(error);
         next(error);
     }
 }
 
 const UserTable = new User().getModelForClass(User);
-export  { User, UserTable }
+export  { User, UserTable };
