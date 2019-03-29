@@ -1,12 +1,15 @@
 import bcrypt from "bcrypt";
+import mongoose from "mongoose";
 import { HookNextFunction, MongooseDocument } from "mongoose";
 import { instanceMethod, pre, prop, Typegoose } from "typegoose";
 import IUser from "../../../shared/models/IUser";
+import auth from "../auth/auth";
 
 const SALT_WORK_FACTOR = 10;
 
 @pre<User>("save", presave)
 class User extends Typegoose implements IUser {
+
     @prop()
     public email?: string;
 
@@ -81,4 +84,5 @@ async function presave(this: User & MongooseDocument, next: HookNextFunction) {
     }
 }
 
-export default new User().getModelForClass(User);
+const UserTable = new User().getModelForClass(User);
+export  { User, UserTable }
