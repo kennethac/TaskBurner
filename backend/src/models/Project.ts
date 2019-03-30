@@ -5,8 +5,7 @@ import IProject from "../../../shared/models/IProject";
 import ITask from "../../../shared/models/ITask";
 import Task from "./Task";
 
-const SALT_WORK_FACTOR = 10;
-
+@pre<Project>("save", presave)
 class Project extends Typegoose implements IProject {
     @prop()
     public shortName: string;
@@ -16,6 +15,9 @@ class Project extends Typegoose implements IProject {
 
     @arrayProp({items: Task})
     public tasks: Task[];
+
+    @prop()
+    public lastUpdated: Date;
 
     /**
      * Adds a task to a project AND saves it.
@@ -37,6 +39,10 @@ class Project extends Typegoose implements IProject {
         this.tasks = this.tasks.filter((t) => t.uuid !== task.uuid);
         this.save();
     }
+}
+
+function presave(this: Project & MongooseDocument, next: HookNextFunction) {
+    this.lastUpdated = new Date();
 }
 
 const ProjectTable = new Project().getModelForClass(Project);

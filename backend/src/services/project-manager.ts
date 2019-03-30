@@ -16,6 +16,21 @@ export default class ProjectManager {
         });
     }
 
+    /**
+     * Like getProject, but only returns something if that project has been updatd since the
+     * lastUpdated parameter.
+     * @param shortName Project short name.
+     * @param lastUpdated Only return a project if it has been updated since this time.
+     */
+    public async checkForUpdate(shortName: string, lastUpdated: Date) {
+        return await ProjectTable.findOne({
+            shortName,
+            lastUpdated: {
+                $gt: lastUpdated
+            }
+        });
+    }
+
     public async getProjectList() {
         return await ProjectTable.find({}, "shortName fullName");
     }

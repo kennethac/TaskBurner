@@ -6,6 +6,7 @@ export default interface ITask {
     dueDate?: Date;
     scheduledDate?: Date;
     complete?: boolean;
+    lastUpdated: Date;
     project?: IProject;
 
     markComplete(): void;
