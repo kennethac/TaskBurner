@@ -1,30 +1,6 @@
 "use strict";
-
-class Task {
-    constructor(name, dueDate, scheduledDate, complete, uuid) {
-        this.name = name;
-        this.dueDate = dueDate;
-        this.scheduledDate = scheduledDate;
-        this.complete = complete;
-        this.uuid = uuid;
-    }
-}
-
-class Project {
-    constructor(name, tasks, lastUpdated) {
-        this.name = name;
-        this.tasks = tasks;
-        this.lastUpdated = lastUpdated;
-    }
-}
-
-Date.prototype.addDays = function (days) {
-    return new Date(this.valueOf() + days * 864e5);
-}
-
-Date.prototype.isThisWeek = function() {
-    return this < new Date().setHours(0).addDays(7);
-}
+import Task from './task'
+import Project from './project'
 
 function newDummyProject(name, numTasks) {
 
