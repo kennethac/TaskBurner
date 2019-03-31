@@ -13,7 +13,7 @@ class Project extends Typegoose implements IProject {
     @prop()
     public fullName: string;
 
-    @arrayProp({items: Task})
+    @arrayProp({ items: Task })
     public tasks: Task[];
 
     @prop()
@@ -25,9 +25,9 @@ class Project extends Typegoose implements IProject {
      * @param task {ITask} The task to add.
      */
     @instanceMethod
-    public addTask(this: InstanceType<Project>, task: Task): void {
+    public async addTask(this: InstanceType<Project>, task: Task): Promise<void> {
         this.tasks.push(task);
-        this.save();
+        await this.save();
     }
 
     /**

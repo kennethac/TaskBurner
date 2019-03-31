@@ -1,7 +1,8 @@
 import { HookNextFunction, MongooseDocument } from "mongoose";
 import { pre, prop, Ref, Typegoose } from "typegoose";
-import ITask from "../../../shared/models/ITAsk";
-import { Project } from "./Project";
+// import { Project } from "./Project";
+import IProject from "../../../shared/models/IProject";
+import ITask from "../../../shared/models/ITask";
 
 @pre<Task>("save", presave)
 class Task extends Typegoose implements ITask {
@@ -20,15 +21,18 @@ class Task extends Typegoose implements ITask {
     @prop()
     public complete?: boolean;
 
-    @prop({ ref: Project })
-    public projectRef?: Ref<Project>;
+    // @prop({ ref: Project })
+    // public projectRef?: Ref<Project>;
 
-    get project(): Project {
+    get project(): IProject {
+        return undefined;
+        /*
         if (this.projectRef instanceof Project) {
             return this.projectRef;
         } else {
             return undefined;
         }
+        */
     }
 
     @prop()
@@ -42,7 +46,7 @@ class Task extends Typegoose implements ITask {
 async function presave(this: Task & MongooseDocument, next: HookNextFunction) {
     this.lastUpdated = new Date();
     await this.execPopulate();
-    (this.projectRef as Project).lastUpdated = this.lastUpdated;
+    // (this.projectRef as Project).lastUpdated = this.lastUpdated;
     // Do I have to save the project?
 }
 

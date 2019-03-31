@@ -67,8 +67,11 @@ class ProjectsController {
         newTask.complete = false;
         newTask.uuid = uuid.v4();
 
-        project.addTask(newTask);
-
+// tslint:disable-next-line: no-console
+        console.log("Before");
+        await project.addTask(newTask);
+// tslint:disable-next-line: no-console
+        console.log("AFter");
         return res.send(newTask);
     }
 
