@@ -25,9 +25,9 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { mapMutations } from "vuex";
-import RootStore from "@/models/root-store";
-import ClassInfo from "@/models/class-info";
-import Task from "@/models/task";
+import RootStore from "../models/root-store";
+import ClassInfo from "../models/project";
+import Task from "../models/task";
 
 @Component
 export default class ClassTasks extends Vue {

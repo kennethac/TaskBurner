@@ -45,7 +45,7 @@ export default new Vuex.Store({
       }
 
       if (!state.classData[payload.classKey].hasOwnProperty("loading")) {
-        state.classData[payload.classKey] = { ...state.classData[payload.classKey], loading: payload.loading };
+        state.classData[payload.classKey] = { ...state.classData[payload.classKey], loading: payload.loading } as Project;
       } else {
         state.classData[payload.classKey].loading = payload.loading;
       }

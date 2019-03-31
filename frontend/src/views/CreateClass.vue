@@ -57,7 +57,7 @@ export default class CreateClass extends Vue {
     } else {
       this.$router.push({
         name: "class",
-        params: { classKey: this.shortName }
+        params: { classKey: this.shortName as string }
       });
     }
   }

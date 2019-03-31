@@ -39,9 +39,9 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { mapMutations } from "vuex";
-import RootStore from "@/models/root-store";
-import ClassInfo from "@/models/class-info";
-import Task from "@/models/task";
+import RootStore from "../models/root-store";
+import ClassInfo from "../models/project";
+import Task from "../models/task";
 
 function addDays(date: Date, days: number) {
   return new Date(date.valueOf() + days * 86400000);
@@ -93,7 +93,7 @@ export default class Weekview extends Vue {
     }
 
     let soon = classData.tasks.filter(
-      t => new Date(t.scheduledDate) < addDays(new Date(), 7)
+      (t: Task) => new Date(t.scheduledDate) < addDays(new Date(), 7)
     );
 
     return groupBy(soon, (t: Task) => new Date(t.scheduledDate).valueOf());

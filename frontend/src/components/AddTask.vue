@@ -51,8 +51,8 @@ export default class AddTask extends Vue {
     const url = process.env.VUE_APP_TASKS_ENDPOINT + this.classKey + "/add";
     const data = new Task(
       this.newTaskName,
-      new Date(this.newTaskDueDate),
-      new Date(this.newTaskScheduledDate),
+      new Date(this.newTaskDueDate as string),
+      new Date(this.newTaskScheduledDate as string),
       false,
       ""
     );
