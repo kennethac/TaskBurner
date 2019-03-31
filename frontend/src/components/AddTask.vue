@@ -29,7 +29,6 @@
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 import Task from "../models/task";
-import { stringify } from "querystring";
 import store from "../store";
 
 @Component
@@ -54,7 +53,8 @@ export default class AddTask extends Vue {
       this.newTaskName,
       new Date(this.newTaskDueDate),
       new Date(this.newTaskScheduledDate),
-      false
+      false,
+      ""
     );
     await fetch(url, {
       headers: {
