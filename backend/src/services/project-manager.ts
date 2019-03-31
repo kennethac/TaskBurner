@@ -2,6 +2,12 @@ import { Project, ProjectTable } from "../models/Project";
 
 export default class ProjectManager {
     public async addProject(fullName: string, shortName: string) {
+        const existingProject = await ProjectTable.findOne({ shortName });
+        if (existingProject) {
+// tslint:disable-next-line: no-console
+            console.log(existingProject);
+            throw new Error("A project with that short name already exists.");
+        }
         const newProject = new ProjectTable({
             shortName, fullName
         });

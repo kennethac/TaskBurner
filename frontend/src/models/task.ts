@@ -22,11 +22,11 @@ export default class Task implements ITask {
     }
 
     confirmDates() {
-        if (!(this.dueDate instanceof Date)) {
+        if (!(this.dueDate instanceof Date) && !(this.dueDate === undefined)) {
             this.dueDate = new Date(this.dueDate);
         }
 
-        if (!(this.scheduledDate instanceof Date)) {
+        if (!(this.scheduledDate instanceof Date) && !(this.scheduledDate === undefined)) {
             this.scheduledDate = new Date(this.scheduledDate);
         }
     }
@@ -36,6 +36,9 @@ export default class Task implements ITask {
     }
 
     get shortScheduledDate() {
+        if (this.scheduledDate === undefined) {
+            return "";
+        }
         return moment(this.scheduledDate).format("MM/DD/YYYY");
     }
 

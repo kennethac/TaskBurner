@@ -22,10 +22,15 @@
             <router-link to="/combined" class="nav-link">Combined</router-link>
           </li>
           <li v-for="c in upperCaseNames" :key="c" class="nav-item">
-            <router-link :to="'/class/' + c.toLowerCase()" class='nav-link'>{{c}}</router-link>
+            <router-link :to="'/class/' + c.toLowerCase()" class="nav-link">{{c}}</router-link>
           </li>
           <li class="nav-item">
             <router-link to="/about" class="nav-link">About</router-link>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <router-link to="/class/create" class="nav-link bright">New Class</router-link>
           </li>
         </ul>
       </div>
@@ -75,7 +80,7 @@ export default class Navbar extends Vue {
   min-height: 80px;
 }
 
-li > a.router-link-exact-active.nav-link {
+li > a.router-link-exact-active.nav-link, li > a.nav-link.bright {
   color: #fff;
 }
 </style>

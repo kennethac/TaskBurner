@@ -19,7 +19,12 @@ class ProjectsController {
             });
         }
 
-        const newProject = await this.manager.addProject(req.body.fullName, req.body.shortName);
+        let newProject;
+        try {
+            newProject = await this.manager.addProject(req.body.fullName, req.body.shortName);
+        } catch (err) {
+            return res.status(500).send({message: err.message});
+        }
 
         res.send(newProject);
     }
@@ -64,13 +69,14 @@ class ProjectsController {
         const newTask = new Task();
         newTask.name = req.body.name;
         newTask.dueDate = req.body.dueDate;
+        newTask.scheduledDate = req.body.scheduledDate;
         newTask.complete = false;
         newTask.uuid = uuid.v4();
 
-// tslint:disable-next-line: no-console
+        // tslint:disable-next-line: no-console
         console.log("Before");
         await project.addTask(newTask);
-// tslint:disable-next-line: no-console
+        // tslint:disable-next-line: no-console
         console.log("AFter");
         return res.send(newTask);
     }

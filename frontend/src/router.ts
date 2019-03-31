@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Class from './views/Class.vue'
 import About from './views/About.vue'
+import CreateClass from './views/CreateClass.vue';
 
 Vue.use(Router)
 
@@ -14,6 +15,11 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/class/create',
+      name: 'createClass',
+      component: CreateClass
     },
     {
       path: '/class/:classKey',

@@ -1,10 +1,27 @@
 <template>
-  <div class="new-task-container">
-    <h4>Add Task</h4>
-    <input v-model="newTaskName">
-    <input type="date" v-model="newTaskDueDate">
-    <input type="date" v-model="newTaskScheduledDate">
-    <button @click="addTask">Add Task</button>
+  <div>
+    <button data-toggle="collapse" href=".new-task-container" class="btn btn-primary">Add Task</button>
+    <form class="collapse new-task-container" @submit.prevent="addTask">
+      <div class="form-group row">
+        <label class="col-md-3">Task Name</label>
+        <div class="col-md-9">
+          <input v-model="newTaskName" class="form-control">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3">Task Due Date</label>
+        <div class="col-md-9">
+          <input type="date" v-model="newTaskDueDate" class="form-control">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3">Task Due Date</label>
+        <div class="col-md-9">
+          <input type="date" v-model="newTaskScheduledDate" class="form-control">
+        </div>
+      </div>
+      <button>Add Task</button>
+    </form>
   </div>
 </template>
 
@@ -33,11 +50,16 @@ export default class AddTask extends Vue {
     //   task: new Task(this.newTaskName, new Date(this.newTaskDueDate!), new Date(this.newTaskScheduledDate!), false)
     // });
     const url = process.env.VUE_APP_TASKS_ENDPOINT + this.classKey + "/add";
-    const data = new Task(this.newTaskName, new Date(this.newTaskDueDate), new Date(this.newTaskScheduledDate), false);
+    const data = new Task(
+      this.newTaskName,
+      new Date(this.newTaskDueDate),
+      new Date(this.newTaskScheduledDate),
+      false
+    );
     await fetch(url, {
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: "application/json",
+        "Content-Type": "application/json"
       },
       method: "POST",
       body: JSON.stringify(data)
@@ -65,3 +87,9 @@ export default class AddTask extends Vue {
   }
 }
 </script>
+
+<style scoped>
+.new-task-container {
+  padding: 20px 0;
+}
+</style>
