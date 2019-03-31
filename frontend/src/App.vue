@@ -6,8 +6,7 @@
     </div>
     <footer>
       &copy; 2019 Kenneth Christensen |
-      <a href="https://github.com/webMan1/TaskBurnerVue">Source</a> |
-      <a href="Https://github.com/webMan1/TaskBurner">API Source</a>
+      <a href="https://github.com/webMan1/TaskBurner">Source</a>
     </footer>
   </div>
 </template>
@@ -20,7 +19,7 @@ export default {
     appHeader: Navbar
   },
   created() {
-      this.$store.dispatch("getClassList");
+    this.$store.dispatch("getClassList");
   }
 };
 </script>
