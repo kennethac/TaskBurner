@@ -35,9 +35,15 @@ class Project extends Typegoose implements IProject {
      * @param task The task to remove
      */
     @instanceMethod
-    public deleteTask(this: InstanceType<Project>, task: Task): void {
+    public async deleteTask(this: InstanceType<Project>, task: Task): Promise<void> {
         this.tasks = this.tasks.filter((t) => t.uuid !== task.uuid);
-        this.save();
+        await this.save();
+    }
+
+    @instanceMethod
+    public async markTaskComplete(this: InstanceType<Project>, task: string, complete: boolean): Promise<void> {
+        this.tasks.filter((t) => t.uuid === task)[0].complete = complete;
+        await this.save();
     }
 }
 

@@ -8,6 +8,7 @@
           <th>Task</th>
           <th>Due Date</th>
           <th>Scheduled Date</th>
+          <th></th>
         </tr>
       </thead>
       <tbody class="upcoming-area">
@@ -18,10 +19,16 @@
             </td>
           </tr>
           <tr v-for="task of day.group" :key="task.name">
-            <td>{{ task.complete ? "Yes" : "No" }}</td>
+            <td>
+              <input type="checkbox" :checked="task.complete" @change="updateComplete(task)">
+              {{ task.complete ? "Yes" : "No" }}
+            </td>
             <td>{{ task.name }}</td>
             <td>{{ task.shortDueDate }}</td>
             <td>{{ task.shortScheduledDate }}</td>
+            <td>
+              <button class="btn btn-sm btn-danger" @click="deleteTask(task)">&times;</button>
+            </td>
           </tr>
         </template>
       </tbody>
@@ -91,10 +98,54 @@ export default class Weekview extends Vue {
 
     return groupBy(soon, (t: Task) => new Date(t.scheduledDate).valueOf());
   }
+
+  async deleteTask(task: Task) {
+    const baseUrl =
+      process.env.VUE_APP_ENDPOINT + "projects/" + this.classKey + "/delete";
+    console.log(task);
+    const result = await fetch(baseUrl, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      method: "DELETE",
+      body: JSON.stringify({
+        uuid: task.uuid
+      })
+    });
+
+    if (result.ok) {
+      this.$store.dispatch("update", this.classKey);
+    } else {
+      alert("Error.");
+    }
+  }
+
+  async updateComplete(task: Task) {
+    const baseUrl =
+      process.env.VUE_APP_ENDPOINT + "projects/" + this.classKey + "/complete";
+    console.log(task);
+    const result = await fetch(baseUrl, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      method: "POST",
+      body: JSON.stringify({
+        uuid: task.uuid,
+        complete: !task.complete
+      })
+    });
+
+    if (result.ok) {
+      this.$store.dispatch("update", this.classKey);
+    } else {
+      alert("Error.");
+    }
+  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>

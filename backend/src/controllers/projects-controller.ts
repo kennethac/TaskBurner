@@ -23,7 +23,7 @@ class ProjectsController {
         try {
             newProject = await this.manager.addProject(req.body.fullName, req.body.shortName);
         } catch (err) {
-            return res.status(500).send({message: err.message});
+            return res.status(500).send({ message: err.message });
         }
 
         res.send(newProject);
@@ -81,11 +81,55 @@ class ProjectsController {
         return res.send(newTask);
     }
 
+    public async deleteTask(req: Request, res: Response, next: NextFunction) {
+        const project = await this.manager.getProject(req.params.shortName);
+
+        if (!project) {
+            return res.status(400).send({
+                message: "No such project"
+            });
+        }
+
+        if (!req.body.uuid) {
+            return res.status(400).send({
+                message: "Missing required information."
+            });
+        }
+
+        project.deleteTask({ uuid: req.body.uuid } as Task);
+
+        res.send("OK");
+    }
+
+    public async complete(req: Request, res: Response, next: NextFunction) {
+        const project = await this.manager.getProject(req.params.shortName);
+
+        if (!project) {
+            return res.status(400).send({
+                message: "No such project"
+            });
+        }
+
+        // tslint:disable-next-line: no-console
+        console.log(req.body);
+        if (!req.body.uuid || req.body.complete === undefined) {
+            return res.status(400).send({
+                message: "Missing required information."
+            });
+        }
+
+        await project.markTaskComplete(req.body.uuid, req.body.complete);
+
+        res.send("OK");
+    }
+
     private initializeRoutes() {
         this.router.get("/", this.getProjectList.bind(this));
         this.router.post("/create", this.addProject.bind(this));
         this.router.post("/:shortName/add", this.addTask.bind(this));
         this.router.get("/:shortName/", this.getProject.bind(this));
+        this.router.delete("/:shortName/delete", this.deleteTask.bind(this));
+        this.router.post("/:shortName/complete", this.complete.bind(this));
     }
 }
 

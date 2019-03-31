@@ -7,16 +7,18 @@ export default class Task implements ITask {
     dueDate: Date;
     complete: boolean;
     lastUpdated: Date = new Date();
+    uuid: string;
 
-    constructor(name: string, dueDate: Date, scheduledDate: Date, complete: boolean) {
+    constructor(name: string, dueDate: Date, scheduledDate: Date, complete: boolean, uuid: string) {
         this.name = name;
         this.dueDate = dueDate;
         this.scheduledDate = scheduledDate;
         this.complete = complete;
+        this.uuid = uuid;
     }
 
     static from(obj: any) {
-        let newTask = new Task(obj.name, obj.dueDate, obj.scheduledDate, obj.complete);
+        let newTask = new Task(obj.name, obj.dueDate, obj.scheduledDate, obj.complete, obj.uuid);
         newTask.confirmDates();
         return newTask;
     }
