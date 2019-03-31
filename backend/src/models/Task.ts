@@ -46,6 +46,7 @@ class Task extends Typegoose implements ITask {
 async function presave(this: Task & MongooseDocument, next: HookNextFunction) {
     this.lastUpdated = new Date();
     await this.execPopulate();
+    next();
     // (this.projectRef as Project).lastUpdated = this.lastUpdated;
     // Do I have to save the project?
 }

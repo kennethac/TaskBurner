@@ -43,6 +43,7 @@ class Project extends Typegoose implements IProject {
 
 function presave(this: Project & MongooseDocument, next: HookNextFunction) {
     this.lastUpdated = new Date();
+    next();
 }
 
 const ProjectTable = new Project().getModelForClass(Project);
