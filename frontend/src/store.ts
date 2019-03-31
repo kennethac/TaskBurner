@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex, { Store } from 'vuex'
 import RootStore from '@/models/root-store';
-import ClassInfo from '@/models/class-info';
+import Project from '@/models/project';
 import Task from '@/models/task'
 import IProject from '../../shared/models/IProject';
 
@@ -15,7 +15,7 @@ export default new Vuex.Store({
     classList: []
   },
   mutations: {
-    setClassInfo(state: RootStore, payload: { classKey: string, classInfo: ClassInfo }) {
+    setClassInfo(state: RootStore, payload: { classKey: string, classInfo: Project }) {
       console.log("Setting!");
       if (state.classData.hasOwnProperty(payload.classKey) && state.classData[payload.classKey].lastUpdated === payload.classInfo.lastUpdated) {
         console.log("Quitting");
@@ -41,7 +41,7 @@ export default new Vuex.Store({
 
     setLoading(state: RootStore, payload: { classKey: string, loading: boolean }) {
       if (!state.classData.hasOwnProperty(payload.classKey)) {
-        Vue.set(state.classData, payload.classKey, <ClassInfo>{});
+        Vue.set(state.classData, payload.classKey, <Project>{});
       }
 
       if (!state.classData[payload.classKey].hasOwnProperty("loading")) {
@@ -113,8 +113,8 @@ export default new Vuex.Store({
     getClass: (state: RootStore) => (classKey: string) => {
       if (classKey === "all") {
         console.log("All tasks.");
-        let data = <ClassInfo>{};
-        data.name = "All Tasks";
+        let data = <Project>{};
+        data.fullName = "All Tasks";
         data.loading = false;
         data.tasks = [];
         let allProjects = state.classData;
@@ -124,7 +124,7 @@ export default new Vuex.Store({
 
       let data = state.classData[classKey];
       if (data === undefined) {
-        data = <ClassInfo>{};
+        data = <Project>{};
       }
       return data;
     },

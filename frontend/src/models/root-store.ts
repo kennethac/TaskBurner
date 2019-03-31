@@ -1,8 +1,8 @@
 import { Dictionary } from 'vue-router/types/router';
-import ClassInfo from './class-info';
+import Project from './project';
 import IProject from '../../../shared/models/IProject';
 
 export default interface RootStore {
-    classData : Dictionary<ClassInfo>;
+    classData : Dictionary<Project>;
     classList: IProject[];
 }

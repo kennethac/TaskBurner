@@ -13,6 +13,7 @@ import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 import Task from "../models/task";
 import { stringify } from "querystring";
+import store from "../store";
 
 @Component
 export default class AddTask extends Vue {
@@ -21,7 +22,7 @@ export default class AddTask extends Vue {
   newTaskDueDate: string | null = null;
   newTaskScheduledDate: string | null = null;
 
-  addTask() {
+  async addTask() {
     console.log(this.newTaskName + " " + this.newTaskDueDate);
     if (!this.inputValid) {
       return;
@@ -31,9 +32,9 @@ export default class AddTask extends Vue {
     //   classKey: this.classKey,
     //   task: new Task(this.newTaskName, new Date(this.newTaskDueDate!), new Date(this.newTaskScheduledDate!), false)
     // });
-    const url = process.env.VUE_APP_TASKS_ENDPOINT + "/" + this.classKey + "/add";
+    const url = process.env.VUE_APP_TASKS_ENDPOINT + this.classKey + "/add";
     const data = new Task(this.newTaskName, new Date(this.newTaskDueDate), new Date(this.newTaskScheduledDate), false);
-    fetch(url, {
+    await fetch(url, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -41,6 +42,7 @@ export default class AddTask extends Vue {
       method: "POST",
       body: JSON.stringify(data)
     });
+    store.dispatch("update", this.classKey);
     this.newTaskName = "";
     this.newTaskDueDate = null;
     this.newTaskScheduledDate = null;

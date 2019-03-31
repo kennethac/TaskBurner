@@ -3,7 +3,7 @@
     <h2>Welcome, Kenneth!</h2>
     <p>Keep it up, you're doing great!</p>
     <div class="chart-area">
-      <ProgressPie v-for="shortName in classNames" :key="shortName" :classKey="shortName" link="#"></ProgressPie>
+      <ProgressPie v-for="shortName in classNames" :key="shortName" :classKey="shortName" :link="shortName"></ProgressPie>
     </div>
   </div>
 </template>

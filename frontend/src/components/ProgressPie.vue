@@ -1,6 +1,6 @@
 <template>
   <div class="chart-container">
-    <router-link :to="link">
+    <router-link :to="'/class/' + link">
       <div class="medium-chart chart-wrapper">
         <canvas ref="chart" class="chart"></canvas>
       </div>
@@ -11,9 +11,9 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { mapMutations } from "vuex";
-import RootStore from "@/models/root-store";
-import ClassInfo from "@/models/class-info";
-import Task from "@/models/task";
+import RootStore from "../models/root-store";
+import ClassInfo from "../models/project";
+import Task from "../models/task";
 import Chart from "chart.js";
 
 var style = getComputedStyle(document.body);
@@ -84,7 +84,7 @@ export default class ProgressPie extends Vue {
     return {
       datasets: [
         {
-          label: classData.name + " Progress",
+          label: classData.fullName + " Progress",
           data: [percent, 1 - percent],
           backgroundColor: [successColor, primaryColor]
         }
