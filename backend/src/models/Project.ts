@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
 import { HookNextFunction, MongooseDocument } from "mongoose";
-import { arrayProp, instanceMethod, InstanceType, pre, prop, Typegoose } from "typegoose";
+import { arrayProp, instanceMethod, InstanceType, pre, prop, Ref, Typegoose } from "typegoose";
+import IUser from "../../../shared/dist/models/IUser";
 import IProject from "../../../shared/models/IProject";
 import ITask from "../../../shared/models/ITask";
 import Task from "./Task";
+import { User } from "./User";
 
 @pre<Project>("save", presave)
 class Project extends Typegoose implements IProject {
@@ -18,6 +20,9 @@ class Project extends Typegoose implements IProject {
 
     @prop()
     public lastUpdated: Date;
+
+    @prop({ ref: User, required: true })
+    public owner: Ref<User> & IUser;
 
     /**
      * Adds a task to a project AND saves it.

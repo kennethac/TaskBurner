@@ -1,7 +1,8 @@
 import bcrypt from "bcrypt";
+import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import { HookNextFunction, MongooseDocument } from "mongoose";
-import { arrayProp, instanceMethod, pre, prop, Typegoose } from "typegoose";
+import { arrayProp, instanceMethod, ModelType, pre, prop, staticMethod, Typegoose } from "typegoose";
 import IUser from "../../../shared/models/IUser";
 import auth from "../auth/auth";
 
@@ -9,6 +10,22 @@ const SALT_WORK_FACTOR = 10;
 
 @pre<User>("save", presave)
 class User extends Typegoose implements IUser {
+
+    public static async verify(this: ModelType<User> & User, req: Request, res: Response, next: NextFunction) {
+        const user = await this.findOne({
+            _id: req.user_id
+        });
+
+        if (!user || !user.tokens.includes(req.token)) {
+            return res.clearCookie("token").status(403).send({
+                error: "Invalid user account."
+            });
+        }
+
+        req.user = user;
+
+        next();
+    }
 
     @prop()
     public email?: string;
@@ -22,7 +39,7 @@ class User extends Typegoose implements IUser {
     @prop()
     public password?: string;
 
-    @arrayProp({items: String})
+    @arrayProp({ items: String })
     public tokens: string[] = [];
 
     // Instance Methods
@@ -84,4 +101,4 @@ async function presave(this: User & MongooseDocument, next: HookNextFunction) {
 }
 
 const UserTable = new User().getModelForClass(User);
-export  { User, UserTable };
+export { User, UserTable };

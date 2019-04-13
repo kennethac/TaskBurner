@@ -1,8 +1,9 @@
 import { Project, ProjectTable } from "../models/Project";
+import { User } from "../models/User";
 
 export default class ProjectManager {
-    public async addProject(fullName: string, shortName: string) {
-        const existingProject = await ProjectTable.findOne({ shortName });
+    public async addProject(owner: User, fullName: string, shortName: string) {
+        const existingProject = await ProjectTable.findOne({ owner, shortName });
         if (existingProject) {
 // tslint:disable-next-line: no-console
             console.log(existingProject);
@@ -16,8 +17,9 @@ export default class ProjectManager {
         return newProject;
     }
 
-    public async getProject(shortName: string) {
+    public async getProject(owner: User, shortName: string) {
         return await ProjectTable.findOne({
+            owner,
             shortName
         });
     }
@@ -25,11 +27,13 @@ export default class ProjectManager {
     /**
      * Like getProject, but only returns something if that project has been updatd since the
      * lastUpdated parameter.
+     * @param owner The username of the individual
      * @param shortName Project short name.
      * @param lastUpdated Only return a project if it has been updated since this time.
      */
-    public async checkForUpdate(shortName: string, lastUpdated: Date) {
+    public async checkForUpdate(owner: User, shortName: string, lastUpdated: Date) {
         return await ProjectTable.findOne({
+            owner,
             shortName,
             lastUpdated: {
                 $gt: lastUpdated
@@ -37,7 +41,9 @@ export default class ProjectManager {
         });
     }
 
-    public async getProjectList() {
-        return await ProjectTable.find({}, "shortName fullName");
+    public async getProjectList(owner: User) {
+        return await ProjectTable.find({
+            owner
+        }, "shortName fullName");
     }
 }
