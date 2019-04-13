@@ -86,8 +86,8 @@ export default new Vuex.Store({
 
       const response = await request.json();
 
-      if (response.message) {
-        return response.message;
+      if (response.error) {
+        return response.error;
       }
 
       context.commit("setUser", response);
@@ -107,8 +107,8 @@ export default new Vuex.Store({
 
       const response = await request.json();
 
-      if (response.message) {
-        return response.message;
+      if (response.error) {
+        return response.error;
       }
 
       context.commit("setUser", response);

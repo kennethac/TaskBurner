@@ -55,6 +55,7 @@ export default class CreateClass extends Vue {
     if (!result.ok) {
       this.message = content.message;
     } else {
+      this.$store.dispatch("getClassList");
       this.$router.push({
         name: "class",
         params: { classKey: this.shortName as string }

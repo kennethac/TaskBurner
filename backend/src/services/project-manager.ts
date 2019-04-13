@@ -1,8 +1,9 @@
+import { InstanceType } from "typegoose";
 import { Project, ProjectTable } from "../models/Project";
 import { User } from "../models/User";
 
 export default class ProjectManager {
-    public async addProject(owner: User, fullName: string, shortName: string) {
+    public async addProject(owner: User & InstanceType<User>, fullName: string, shortName: string) {
         const existingProject = await ProjectTable.findOne({ owner, shortName });
         if (existingProject) {
 // tslint:disable-next-line: no-console
@@ -10,6 +11,7 @@ export default class ProjectManager {
             throw new Error("A project with that short name already exists.");
         }
         const newProject = new ProjectTable({
+            owner: owner._id,
             shortName, fullName
         });
 
@@ -17,9 +19,9 @@ export default class ProjectManager {
         return newProject;
     }
 
-    public async getProject(owner: User, shortName: string) {
+    public async getProject(owner: User & InstanceType<User>, shortName: string) {
         return await ProjectTable.findOne({
-            owner,
+            owner: owner._id,
             shortName
         });
     }
@@ -31,9 +33,9 @@ export default class ProjectManager {
      * @param shortName Project short name.
      * @param lastUpdated Only return a project if it has been updated since this time.
      */
-    public async checkForUpdate(owner: User, shortName: string, lastUpdated: Date) {
+    public async checkForUpdate(owner: User & InstanceType<User>, shortName: string, lastUpdated: Date) {
         return await ProjectTable.findOne({
-            owner,
+            owner: owner._id,
             shortName,
             lastUpdated: {
                 $gt: lastUpdated
@@ -41,9 +43,9 @@ export default class ProjectManager {
         });
     }
 
-    public async getProjectList(owner: User) {
+    public async getProjectList(owner: User & InstanceType<User>) {
         return await ProjectTable.find({
-            owner
+            owner: owner._id,
         }, "shortName fullName");
     }
 }

@@ -108,6 +108,8 @@ class ProjectsController {
             });
         }
 
+// tslint:disable-next-line: no-console
+        console.log(req.user);
         const requestedProject = await this.manager.getProject(req.user, req.params.shortName);
 
         if (requestedProject == null) {
