@@ -12,11 +12,13 @@ const SALT_WORK_FACTOR = 10;
 class User extends Typegoose implements IUser {
 
     public static async verify(this: ModelType<User> & User, req: Request, res: Response, next: NextFunction) {
-        const user = await this.findOne({
-            _id: req.user_id
-        });
+        // For some reason the req changes aren't persisting in the other thing....
+        auth.verifyToken(req, res, () => false);
 
-        if (!user || !user.tokens.includes(req.token)) {
+        const user = await this.findOne({
+            _id: req.params.user_id
+        });
+        if (!user || !user.tokens.includes(req.params.token)) {
             return res.clearCookie("token").status(403).send({
                 error: "Invalid user account."
             });

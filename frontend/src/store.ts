@@ -4,17 +4,23 @@ import RootStore from '@/models/root-store';
 import Project from '@/models/project';
 import Task from '@/models/task'
 import IProject from '../../shared/models/IProject';
+import IUser from '../../shared/dist/models/IUser';
+import { register } from 'register-service-worker';
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: <RootStore>{
+    user: undefined,
     classData: {
       /* No initial classes */
     },
     classList: []
   },
   mutations: {
+    setUser(state: RootStore, payload: IUser) {
+      state.user = payload;
+    },
     setClassInfo(state: RootStore, payload: { classKey: string, classInfo: Project }) {
       console.log("Setting!");
       if (state.classData.hasOwnProperty(payload.classKey) && state.classData[payload.classKey].lastUpdated === payload.classInfo.lastUpdated) {
@@ -65,11 +71,63 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    async login(context, payload) {
+      const request = await fetch("/users/login", {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!request.ok) {
+        return "Failed request";
+      }
+
+      const response = await request.json();
+
+      if (response.message) {
+        return response.message;
+      }
+
+      context.commit("setUser", response);
+    },
+    async register(context, payload) {
+      const request = await fetch("/users/register", {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!request.ok) {
+        return "Failed request.";
+      }
+
+      const response = await request.json();
+
+      if (response.message) {
+        return response.message;
+      }
+
+      context.commit("setUser", response);
+    },
+    async getUser(context) {
+      const request = await fetch("/users/");
+
+      if (!request.ok) {
+        return "Error with request";
+      }
+
+      context.commit("setUser", request.json());
+      return "";
+    },
     async update(context, classKey) {
       let commit = context.commit;
 
       console.log("Update with: " + classKey);
-      let url = process.env.VUE_APP_TASKS_ENDPOINT;
+      let url = "/projects/";
 
 
       commit("setLoading", {
@@ -94,7 +152,7 @@ export default new Vuex.Store({
       });
     },
     async getClassList({ commit }) {
-      let url = process.env.VUE_APP_TASKS_ENDPOINT;
+      let url = "/projects/";
 
       var response = await fetch(url);
       
@@ -134,6 +192,9 @@ export default new Vuex.Store({
       } catch (err) {
         return [];
       }
+    },
+    getUser: (state: RootStore) => () => {
+      return state.user;
     }
   }
 })

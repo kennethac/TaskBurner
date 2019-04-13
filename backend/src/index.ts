@@ -8,7 +8,7 @@ import auth from "./auth/auth";
 import ProjectsController from "./controllers/projects-controller";
 import UsersController from "./controllers/users-controller";
 import { Project } from "./models/Project";
-import { User } from "./models/User";
+import { User, UserTable } from "./models/User";
 
 // connect to the database
 mongoose.connect("mongodb://localhost:27017/taskburner", {
@@ -30,7 +30,8 @@ if (app.get("env") === "development") {
 }
 
 app.use("/users", UserController.router);
-app.use("/projects", auth.verifyToken, User.verify, ProjectController.router);
+
+app.use("/projects", auth.verifyToken, User.verify.bind(UserTable), ProjectController.router);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

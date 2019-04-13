@@ -101,7 +101,7 @@ export default class Weekview extends Vue {
 
   async deleteTask(task: Task) {
     const baseUrl =
-      process.env.VUE_APP_ENDPOINT + "projects/" + this.classKey + "/delete";
+      "/projects/" + this.classKey + "/delete";
     console.log(task);
     const result = await fetch(baseUrl, {
       headers: {
@@ -123,7 +123,7 @@ export default class Weekview extends Vue {
 
   async updateComplete(task: Task) {
     const baseUrl =
-      process.env.VUE_APP_ENDPOINT + "projects/" + this.classKey + "/complete";
+      "/projects/" + this.classKey + "/complete";
     console.log(task);
     const result = await fetch(baseUrl, {
       headers: {

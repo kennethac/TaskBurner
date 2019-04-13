@@ -38,7 +38,7 @@ export default class CreateClass extends Vue {
   }
 
   public async createClass() {
-    const baseUrl = process.env.VUE_APP_ENDPOINT + "projects/create";
+    const baseUrl = "/projects/create";
     const result = await fetch(baseUrl, {
       headers: {
         Accept: "application/json",

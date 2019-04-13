@@ -41,6 +41,7 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
     // save user id
     req.params.user_id = decoded.id; // hello?
     req.params.token = token;
+
     next();
 
   } catch (error) {

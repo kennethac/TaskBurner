@@ -19,7 +19,11 @@ export default {
     appHeader: Navbar
   },
   created() {
-    this.$store.dispatch("getClassList");
+    try {
+      this.$store.dispatch("getClassList");
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 </script>
