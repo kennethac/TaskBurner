@@ -1,5 +1,9 @@
 <template>
   <form class="form" @submit.prevent="login">
+    <h3>Login</h3>
+    <div class="form-group" v-show="error">
+      <div class="alert alert-warning">{{ error }}</div>
+    </div>
     <div class="form-group">
       <label>Email</label>
       <input v-model="email" class="form-control">
@@ -9,7 +13,7 @@
       <input type="password" v-model="password" class="form-control">
     </div>
     <div class="from-group">
-        <button class="btn btn-primary">Login</button>
+      <button class="btn btn-primary">Login</button>
     </div>
   </form>
 </template>

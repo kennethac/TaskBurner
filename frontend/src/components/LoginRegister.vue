@@ -2,11 +2,11 @@
   <div class="loginRegister">
     <div class="login-area" v-show="loggingIn">
       <login></login>
-      <button class="btn btn-primary" @click="showLogin(false)">I need to register</button>
+      <button class="btn btn-primary swap-button" @click="showLogin(false)">I need to register</button>
     </div>
     <div class="register-area" v-show="!loggingIn">
       <register></register>
-      <button class="btn btn-primary" @click.prevent="showLogin(true)">I need to login</button>
+      <button class="btn btn-primary swap-button" @click.prevent="showLogin(true)">I need to login</button>
     </div>
   </div>
 </template>
@@ -31,3 +31,10 @@ export default class LoginRegister extends Vue {
   }
 }
 </script>
+
+<style scoped>
+.swap-button {
+  margin-top: 15px;
+}
+</style>
+

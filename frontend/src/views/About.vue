@@ -10,11 +10,6 @@
     <div class="h-center">
       <div class="non-flexible big-logo"></div>
     </div>
-    <p>
-      Currently it is just static and holds bogus tasks for my CS 260, Math 313 and English 316 classes - however it
-      will be developed further.
-    </p>
-    <p>Stay tuned!</p>
   </div>
 </template>
 <style scoped>

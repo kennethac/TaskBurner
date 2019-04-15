@@ -1,5 +1,9 @@
 <template>
   <form class="form" @submit.prevent="login">
+    <h3>Register</h3>
+    <div class="form-group" v-show="error">
+      <div class="alert alert-warning">{{ error }}</div>
+    </div>
     <div class="form-group">
       <label>First name</label>
       <input v-model="firstName" class="form-control">

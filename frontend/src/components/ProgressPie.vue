@@ -62,7 +62,7 @@ export default class ProgressPie extends Vue {
   get currentClass() {
     let data = <ClassInfo>this.$store.getters.getClass(this.classKey);
     if (data.tasks === undefined) {
-            this.$store.dispatch("update", this.classKey);
+      this.$store.dispatch("update", this.classKey);
     }
     return data;
   }
@@ -71,12 +71,21 @@ export default class ProgressPie extends Vue {
     var total = 0;
     var complete = 0;
     let classData = this.currentClass;
-    for (var task of classData.tasks) {
-      if (task.complete) {
-        complete++;
-      }
 
-      total++;
+    if (
+      classData == undefined ||
+      classData.tasks == undefined ||
+      classData.tasks.length < 1
+    ) {
+      total = Infinity;
+    } else {
+      for (var task of classData.tasks) {
+        if (task.complete) {
+          complete++;
+        }
+
+        total++;
+      }
     }
 
     var percent = complete / total;

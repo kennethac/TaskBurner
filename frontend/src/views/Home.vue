@@ -2,8 +2,15 @@
   <div class="home" v-if="loggedIn">
     <Dashboard/>
   </div>
-  <div class="home" v-else>
-    <LoginRegister />
+  <div class="home container" v-else>
+    <div class="row">
+      <div class="col-md-6">
+        <About/>
+      </div>
+      <div class="col-md-6">
+        <LoginRegister class="home-login"/>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -11,9 +18,13 @@
 import { Component, Vue } from "vue-property-decorator";
 import Dashboard from "@/components/Dashboard.vue"; // @ is an alias to /src
 import LoginRegister from "@/components/LoginRegister.vue";
+import About from "@/views/About.vue";
+
 @Component({
   components: {
-    Dashboard, LoginRegister
+    Dashboard,
+    LoginRegister,
+    About
   }
 })
 export default class Home extends Vue {
@@ -25,3 +36,9 @@ export default class Home extends Vue {
   }
 }
 </script>
+
+<style scoped>
+.home-login {
+  margin-top: 90px;
+}
+</style>

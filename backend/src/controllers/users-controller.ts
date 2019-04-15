@@ -103,10 +103,21 @@ class UsersController {
             .status(200).send({ user, token });
     }
 
+    // Logout
+    public async logoff(req: Request, res: Response, next: NextFunction) {
+// tslint:disable-next-line: no-console
+        console.log(req.user);
+        req.user.removeToken(req.token);
+        await req.user.save();
+        res.clearCookie("token");
+        res.sendStatus(200);
+    }
+
     private initializeRoutes() {
         this.router.get("/", auth.verifyToken, this.getCurrentUser.bind(this));
         this.router.post("/register", this.register.bind(this));
         this.router.post("/login", this.logon.bind(this));
+        this.router.delete("/logout", auth.verifyToken, User.verify.bind(UserTable), this.logoff.bind(this));
     }
 }
 

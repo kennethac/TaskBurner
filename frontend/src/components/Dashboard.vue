@@ -1,9 +1,14 @@
 <template>
   <div>
-    <h2>Welcome, Kenneth!</h2>
+    <h2>Welcome, {{name}}!</h2>
     <p>Keep it up, you're doing great!</p>
     <div class="chart-area">
-      <ProgressPie v-for="shortName in classNames" :key="shortName" :classKey="shortName" :link="shortName"></ProgressPie>
+      <ProgressPie
+        v-for="shortName in classNames"
+        :key="shortName"
+        :classKey="shortName"
+        :link="shortName"
+      ></ProgressPie>
     </div>
   </div>
 </template>
@@ -19,8 +24,12 @@ import Chart from "chart.js";
   }
 })
 export default class Dashboard extends Vue {
-  get classNames () {
+  get classNames() {
     return this.$store.getters.getClasses();
+  }
+
+  get name() {
+    return this.$store.getters.getUser().firstName;
   }
 }
 </script>

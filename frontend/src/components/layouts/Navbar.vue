@@ -18,19 +18,24 @@
           <li class="nav-item">
             <router-link to="/" class="nav-link">Home</router-link>
           </li>
-          <li class="nav-item">
-            <router-link to="/combined" class="nav-link">Combined</router-link>
-          </li>
-          <li v-for="c in upperCaseNames" :key="c" class="nav-item">
-            <router-link :to="'/class/' + c.toLowerCase()" class="nav-link">{{c}}</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="/about" class="nav-link">About</router-link>
-          </li>
+          <template v-if="loggedIn">
+            <li class="nav-item">
+              <router-link to="/combined" class="nav-link">Combined</router-link>
+            </li>
+            <li v-for="c in upperCaseNames" :key="c" class="nav-item">
+              <router-link :to="'/class/' + c.toLowerCase()" class="nav-link">{{c}}</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/about" class="nav-link">About</router-link>
+            </li>
+          </template>
         </ul>
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav ml-auto" v-show="loggedIn">
           <li class="nav-item">
             <router-link to="/class/create" class="nav-link bright">New Class</router-link>
+          </li>
+          <li class="nav-item">
+            <a href="#" @click.prevent="logout()" class="nav-link bright">Log Out</a>
           </li>
         </ul>
       </div>
@@ -49,6 +54,14 @@ export default class Navbar extends Vue {
     return this.$store.getters
       .getClasses()
       .map((name: string) => name[0].toUpperCase() + name.substr(1));
+  }
+  get loggedIn() {
+    return this.$store.getters.getUser() != undefined;
+  }
+
+  logout() {
+    console.log("Logout");
+    this.$store.dispatch("logout");
   }
 }
 </script>
@@ -80,7 +93,8 @@ export default class Navbar extends Vue {
   min-height: 80px;
 }
 
-li > a.router-link-exact-active.nav-link, li > a.nav-link.bright {
+li > a.router-link-exact-active.nav-link,
+li > a.nav-link.bright {
   color: #fff;
 }
 </style>

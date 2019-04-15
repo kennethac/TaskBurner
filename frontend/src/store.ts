@@ -80,8 +80,12 @@ export default new Vuex.Store({
         }
       });
 
+      if (request.status == 403) {
+        return (await request.json()).message;
+      }
+
       if (!request.ok) {
-        return "Failed request";
+        return "All fields are required.";
       }
 
       const response = await request.json();
@@ -90,7 +94,20 @@ export default new Vuex.Store({
         return response.error;
       }
 
-      context.commit("setUser", response);
+      context.commit("setUser", response.user);
+    },
+    async logout(context) {
+      try {
+        const request = await fetch("/users/logout",
+          {
+            method: "DELETE"
+          });
+        context.commit('setUser', undefined);
+        return "";
+      } catch (error) {
+        console.log(error);
+        return "There was a problem.";
+      }
     },
     async register(context, payload) {
       const request = await fetch("/users/register", {
@@ -102,7 +119,7 @@ export default new Vuex.Store({
       });
 
       if (!request.ok) {
-        return "Failed request.";
+        return "All fields are required.";
       }
 
       const response = await request.json();
@@ -111,16 +128,22 @@ export default new Vuex.Store({
         return response.error;
       }
 
-      context.commit("setUser", response);
+      context.commit("setUser", response.user);
     },
     async getUser(context) {
+      const startedLoggedOut = context.state.user == undefined;
+
       const request = await fetch("/users/");
 
       if (!request.ok) {
         return "Error with request";
       }
 
-      context.commit("setUser", request.json());
+      context.commit("setUser", await request.json());
+
+      if (startedLoggedOut) {
+        context.dispatch("getClassList");
+      }
       return "";
     },
     async update(context, classKey) {
@@ -155,14 +178,14 @@ export default new Vuex.Store({
       let url = "/projects/";
 
       var response = await fetch(url);
-      
+
       if (!response.ok) {
         console.error("Failed to fetch class list.");
       }
 
       var result = await response.json();
       console.log(result);
-      commit('setClassList', {classList: result});
+      commit('setClassList', { classList: result });
     }
 
   },
