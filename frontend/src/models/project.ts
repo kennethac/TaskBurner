@@ -1,5 +1,6 @@
 import Task from './task';
 import IProject from '../../../shared/models/IProject';
+import IUser from '../../../shared/dist/models/IUser';
 
 export default class Project implements IProject {
     _id?: any;
@@ -8,6 +9,7 @@ export default class Project implements IProject {
     loading?: boolean;
     tasks: Array<Task> = [];
     lastUpdated: Date = new Date();
+    owner!: IUser;
 
     addTask(task: import("../../../shared/models/ITask").default): void {
         throw new Error("Method not implemented.");
