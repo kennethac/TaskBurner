@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="form-group row">
-        <label class="col-md-3">Task Due Date</label>
+        <label class="col-md-3">Task Scheduled Date</label>
         <div class="col-md-9">
           <input type="date" v-model="newTaskScheduledDate" class="form-control">
         </div>

@@ -2,13 +2,17 @@
   <div>
     <h2>Welcome, {{name}}!</h2>
     <p>Keep it up, you're doing great!</p>
-    <div class="chart-area">
+    <div class="chart-area" v-if="showPies">
       <ProgressPie
         v-for="shortName in classNames"
         :key="shortName"
         :classKey="shortName"
         :link="shortName"
       ></ProgressPie>
+    </div>
+    <div class="alert alert-warning" v-else>
+      You have no classes.
+      <router-link to="/class/create">Let's get started!</router-link>
     </div>
   </div>
 </template>
@@ -26,6 +30,10 @@ import Chart from "chart.js";
 export default class Dashboard extends Vue {
   get classNames() {
     return this.$store.getters.getClasses();
+  }
+
+  get showPies() {
+    return this.classNames != undefined && this.classNames.length > 0;
   }
 
   get name() {
